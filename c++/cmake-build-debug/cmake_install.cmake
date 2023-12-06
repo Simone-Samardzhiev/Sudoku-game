@@ -1,4 +1,4 @@
-# Install script for directory: /home/simone/Desktop/My projects/Sudoku game/c++
+# Install script for directory: /home/simone/Desktop/My projects/Sudoku Game/c++
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/simone/Desktop/My projects/Sudoku game/c++/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/simone/Desktop/My projects/Sudoku Game/c++/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -1,9 +1,9 @@
 c___autogen/timestamp: \
-  /home/simone/Desktop/My\ projects/Sudoku\ game/c++/CMakeLists.txt \
+  /home/simone/Desktop/My\ projects/Sudoku\ Game/c++/CMakeLists.txt \
   CMakeFiles/3.26.4/CMakeCCompiler.cmake \
   CMakeFiles/3.26.4/CMakeCXXCompiler.cmake \
   CMakeFiles/3.26.4/CMakeSystem.cmake \
-  /home/simone/Desktop/My\ projects/Sudoku\ game/c++/main.cpp \
+  /home/simone/Desktop/My\ projects/Sudoku\ Game/c++/main.cpp \
   /snap/clion/250/bin/cmake/linux/x64/share/cmake-3.26/Modules/CMakeCCompiler.cmake.in \
   /snap/clion/250/bin/cmake/linux/x64/share/cmake-3.26/Modules/CMakeCCompilerABI.c \
   /snap/clion/250/bin/cmake/linux/x64/share/cmake-3.26/Modules/CMakeCInformation.cmake \

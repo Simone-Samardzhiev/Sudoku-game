@@ -1,4 +1,4 @@
-/snap/clion/250/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/250/bin/ninja/linux/x64/ninja -G Ninja -S "/home/simone/Desktop/My projects/Sudoku game/c++" -B "/home/simone/Desktop/My projects/Sudoku game/c++/cmake-build-debug"
+/snap/clion/250/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/250/bin/ninja/linux/x64/ninja -G Ninja -S "/home/simone/Desktop/My projects/Sudoku Game/c++" -B "/home/simone/Desktop/My projects/Sudoku Game/c++/cmake-build-debug"
 -- The C compiler identification is GNU 11.4.0
 -- The CXX compiler identification is GNU 11.4.0
 -- Detecting C compiler ABI info
@@ -11,6 +11,6 @@
 -- Check for working CXX compiler: /usr/bin/c++ - skipped
 -- Detecting CXX compile features
 -- Detecting CXX compile features - done
--- Configuring done (1.0s)
+-- Configuring done (1.8s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/simone/Desktop/My projects/Sudoku game/c++/cmake-build-debug
+-- Build files have been written to: /home/simone/Desktop/My projects/Sudoku Game/c++/cmake-build-debug

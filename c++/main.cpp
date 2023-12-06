@@ -94,12 +94,41 @@ private:
         }
     }
 
+    bool findSolutions(int &count) {
+        int row, col;
+        if (!findEmptyCell(row, col)) {
+            count++;
+            return true;
+        }
+
+        for (int num = 1; num <= SIZE; num++) {
+            if (isValidMove(row, col, num)) {
+                sudoku[row][col] = num;
+
+                if (findSolutions(count) && count > 1) {
+                    return true;
+                }
+
+                sudoku[row][col] = EMPTY;
+            }
+        }
+        return false;
+    }
+
 public:
     void createGame(int count) {
-        this->cleanValues();
-        this->generateSolvedSudoku();
-        this->solvedSudoku = sudoku;
-        this->deleteValues(count);
+        cleanValues();
+        generateSolvedSudoku();
+        solvedSudoku = sudoku;
+        deleteValues(count);
+
+        int solutions = 0;
+        findSolutions(solutions);
+
+        if (solutions != 1) {
+            cleanValues();
+            createGame(count);
+        }
     }
 
     const std::array<std::array<int, SIZE>, SIZE> &getSudoku() const {
@@ -146,7 +175,6 @@ private:
             for (int j = 0; j < 3; j++) {
                 layouts[i][j] = new QGridLayout;
                 layouts[i][j]->setSpacing(0);
-                layouts[i][j]->setVerticalSpacing(0);
                 int startRow = i * 3;
                 int startCol = j * 3;
 

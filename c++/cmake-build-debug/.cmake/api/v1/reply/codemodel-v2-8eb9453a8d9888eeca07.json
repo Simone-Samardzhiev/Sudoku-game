@@ -43,7 +43,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "c__::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-c__-Debug-3fbb33ff3f9edec630e9.json",
+					"jsonFile" : "target-c__-Debug-4728e9ac5d8513d92050.json",
 					"name" : "c__",
 					"projectIndex" : 0
 				},
@@ -67,8 +67,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/simone/Desktop/My projects/Sudoku game/c++/cmake-build-debug",
-		"source" : "/home/simone/Desktop/My projects/Sudoku game/c++"
+		"build" : "/home/simone/Desktop/My projects/Sudoku Game/c++/cmake-build-debug",
+		"source" : "/home/simone/Desktop/My projects/Sudoku Game/c++"
 	},
 	"version" : 
 	{
