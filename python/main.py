@@ -1,12 +1,10 @@
 from tkinter import Tk, Button, Frame, ttk
 from typing import List, Optional, Tuple
-from copy import deepcopy
 import random
 
 
 class Game:
     sudoku: List[List[int]]
-    solvedSudoku: List[List[int]]
     values: List[int] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     def is_save(self, row: int, col: int, value: int) -> bool:
@@ -59,14 +57,49 @@ class Game:
     def generate_sudoku(self, count: int) -> None:
         self.sudoku = [[0 for _ in range(9)] for _ in range(9)]
         self.solve()
-        self.solvedSudoku = deepcopy(self.sudoku)
         self.remove_values(count)
 
     def get_sudoku(self) -> List[List[int]]:
         return self.sudoku
 
-    def get_solved_sudoku(self) -> List[List[int]]:
-        return self.solvedSudoku
+    @staticmethod
+    def check_for_rows_cols(grid: List[List[Button]]) -> bool:
+        for i in range(9):
+            visited_row = [False for _ in range(9)]
+            visited_col = [False for _ in range(9)]
+            for j in range(9):
+                try:
+                    index = int(grid[i][j].cget('text'))
+                except ValueError:
+                    return False
+
+                if visited_row[index - 1] or visited_col[index - 1]:
+                    return False
+                else:
+                    visited_row[index - 1] = True
+                    visited_col[index - 1] = True
+
+    @staticmethod
+    def check_for_sub_grids(grid: List[List[Button]]) -> bool:
+        for row in range(0, 9, 3):
+            for col in range(0, 9, 3):
+                visited = [False for _ in range(9)]
+                for i in range(row, row + 3):
+                    for j in range(col, col + 3):
+                        try:
+                            index = int(grid[i][j].cget('text'))
+                        except ValueError:
+                            return False
+                        if visited[index - 1]:
+                            return False
+                        else:
+                            visited[index - 1] = True
+
+        return True
+
+    @staticmethod
+    def check_for_valid_grid(grid: List[List[Button]]):
+        return Game.check_for_rows_cols(grid) and Game.check_for_sub_grids(grid)
 
 
 class Window(Tk):
@@ -133,11 +166,11 @@ class Window(Tk):
     def create_game_clicked(self):
         match self.difficulties.get():
             case "Easy":
-                self.sudoku.generate_sudoku(20)
-            case "Medium":
                 self.sudoku.generate_sudoku(30)
-            case "Hard":
+            case "Medium":
                 self.sudoku.generate_sudoku(40)
+            case "Hard":
+                self.sudoku.generate_sudoku(50)
 
         sudoku = self.sudoku.get_sudoku()
 
@@ -161,15 +194,14 @@ class Window(Tk):
             pass
 
     def on_check_press(self):
-        sudoku = self.sudoku.get_solved_sudoku()
-
-        for i in range(9):
-            for j in range(9):
-                self.inputs[i][j].config(state="disabled")
-                if self.inputs[i][j].cget("text") != str(sudoku[i][j]):
-                    self.inputs[i][j].config(bg="red")
-                else:
-                    self.inputs[i][j].config(bg="green")
+        if Game.check_for_valid_grid(self.inputs):
+            for i in range(9):
+                for j in range(9):
+                    self.inputs[i][j].config(state="disabled", bg="green")
+        else:
+            for i in range(9):
+                for j in range(9):
+                    self.inputs[i][j].config(state="disabled", bg="red")
 
 
 def main() -> None:

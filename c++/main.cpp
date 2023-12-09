@@ -16,7 +16,6 @@ const int EMPTY = 0;
 class Game {
 private:
     std::array<std::array<int, SIZE>, SIZE> sudoku;
-    std::array<std::array<int, SIZE>, SIZE> solvedSudoku;
 
     bool generateSolvedSudoku() {
         int row, col;
@@ -94,49 +93,68 @@ private:
         }
     }
 
-    bool findSolutions(int &count) {
-        int row, col;
-        if (!findEmptyCell(row, col)) {
-            count++;
-            return true;
-        }
-
-        for (int num = 1; num <= SIZE; num++) {
-            if (isValidMove(row, col, num)) {
-                sudoku[row][col] = num;
-
-                if (findSolutions(count) && count > 1) {
-                    return true;
+    static bool checkForRowsAndCols(QLineEdit *grid[SIZE][SIZE]) {
+        for (int i = 0; i < 9; i++) {
+            bool visitedRow[9] = {false, false, false, false, false, false, false, false, false};
+            bool visitedCol[9] = {false, false, false, false, false, false, false, false, false};
+            for (int j = 0; j < 9; j++) {
+                bool isNotEmpty_1 = true;
+                bool isNotEmpty_2 = true;
+                int index_1 = grid[i][j]->text().toInt(&isNotEmpty_1);
+                int index_2 = grid[j][i]->text().toInt(&isNotEmpty_2);
+                if (index_1 == 0 || index_2 == 0 || !isNotEmpty_1 || !isNotEmpty_2) {
+                    return false;
                 }
-
-                sudoku[row][col] = EMPTY;
+                if (visitedRow[index_1 - 1] || visitedCol[index_2 - 1]) {
+                    return false;
+                } else {
+                    visitedRow[index_1 - 1] = true;
+                    visitedCol[index_2 - 1] = true;
+                }
             }
         }
-        return false;
+
+        return true;
     }
+
+    static bool checkSubGrids(QLineEdit *grid[SIZE][SIZE]) {
+        for (int i = 0; i < 9; i += 3) {
+            for (int j = 0; j < 9; j++) {
+                bool visited[9] = {false, false, false, false, false, false, false, false, false};
+                for (int k = i; k < i + 3; k++) {
+                    for (int z = j; z < j + 3; z++) {
+                        bool isNotEmpty = true;
+                        int index = grid[k][z]->text().toInt(&isNotEmpty);
+                        if (index == 0 || !isNotEmpty) {
+                            return false;
+                        }
+                        if (visited[index - 1]) {
+                            return false;
+                        } else {
+                            visited[index - 1] = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
+
 
 public:
     void createGame(int count) {
-        cleanValues();
-        generateSolvedSudoku();
-        solvedSudoku = sudoku;
-        deleteValues(count);
-
-        int solutions = 0;
-        findSolutions(solutions);
-
-        if (solutions != 1) {
-            cleanValues();
-            createGame(count);
-        }
+        this->cleanValues();
+        this->generateSolvedSudoku();
+        this->deleteValues(count);
     }
 
     const std::array<std::array<int, SIZE>, SIZE> &getSudoku() const {
         return sudoku;
     }
 
-    const std::array<std::array<int, SIZE>, SIZE> &getSolvedSudoku() const {
-        return solvedSudoku;
+    static bool checkForValidGrid(QLineEdit *grid[SIZE][SIZE]) {
+        return checkForRowsAndCols(grid) && checkSubGrids(grid);
     }
 };
 
@@ -162,12 +180,12 @@ private:
             }
         }
 
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                this->inputs[i][j] = new QLineEdit;
-                this->inputs[i][j]->setValidator(new QIntValidator);
-                this->inputs[i][j]->setAlignment(Qt::AlignCenter);
-                this->inputs[i][j]->setMaxLength(1);
+        for (auto &input: this->inputs) {
+            for (auto &j: input) {
+                j = new QLineEdit;
+                j->setValidator(new QIntValidator);
+                j->setAlignment(Qt::AlignCenter);
+                j->setMaxLength(1);
             }
         }
 
@@ -193,11 +211,11 @@ private:
 private slots:
 
     void onCreateGamePressed() {
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                this->inputs[i][j]->setText("");
-                this->inputs[i][j]->setStyleSheet("");
-                this->inputs[i][j]->setReadOnly(false);
+        for (auto &input: this->inputs) {
+            for (auto &j: input) {
+                j->setText("");
+                j->setStyleSheet("");
+                j->setReadOnly(false);
             }
         }
 
@@ -223,15 +241,19 @@ private slots:
     };
 
     void onCheckGamePressed() {
-        std::array<std::array<int, SIZE>, SIZE> solvedSudoku = game.getSolvedSudoku();
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                if (this->inputs[i][j]->text() == "" || this->inputs[i][j]->text().toInt() != solvedSudoku[i][j]) {
-                    this->inputs[i][j]->setStyleSheet("background-color: red;");
-                } else {
-                    this->inputs[i][j]->setStyleSheet("background-color: green;");
+        if (Game::checkForValidGrid(this->inputs)) {
+            for (auto &input: this->inputs) {
+                for (auto &j: input) {
+                    j->setStyleSheet("background-color: green");
+                    j->setReadOnly(true);
                 }
-                this->inputs[i][j]->setReadOnly(true);
+            }
+        } else {
+            for (auto &input: this->inputs) {
+                for (auto &j: input) {
+                    j->setStyleSheet("background-color: red");
+                    j->setReadOnly(true);
+                }
             }
         }
     }
